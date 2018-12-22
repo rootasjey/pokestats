@@ -1,0 +1,23 @@
+{
+  "name": "pokeverse",
+  "version": "1.0.0",
+  "description": "A Pokemon API specific service",
+  "main": "index.js",
+  "repository": "https://github.com/rootasjey/pokeverse.git",
+  "author": "rootasjey <jeremiecorpinot@outlook.com>",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "dev": "nodemon ./index.js",
+    "start": "node ./index.js"
+  },
+  "dependencies": {
+    "apollo-server": "2.3.1",
+    "fs-extra": "7.0.1",
+    "graphql": "14.0.2",
+    "pokedex-promise-v2": "3.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "1.18.9"
+  }
+}
