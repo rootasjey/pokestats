@@ -1,4 +1,4 @@
-# pokeverse
+# pokestats
 
 A Pokemon specific API service.
 
@@ -6,7 +6,7 @@ This API service's purpose is **not** to be exhaustive about all Pokemon informa
 
 ## Quickstart
 
-You can use the available URL at the top of [this page](https://github.com/rootasjey/pokeverse).
+You can use the available URL at the top of [this page](https://github.com/rootasjey/pokestats).
 
 ### In the Playground
 
@@ -217,8 +217,8 @@ Response:
 
 ## development
 
-* Clone the repo with `git clone https://github.com/rootasjey/pokeverse`
-* Go to the cloned repo with `cd pokeverse`
+* Clone the repo with `git clone https://github.com/rootasjey/pokestats`
+* Go to the cloned repo with `cd pokestats`
 * Install dependencies with `yarn` or `npm install`
 * Run the app with `yarn run start` or `npm start`
 

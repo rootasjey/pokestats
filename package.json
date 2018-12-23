@@ -1,9 +1,9 @@
 {
-  "name": "pokeverse",
+  "name": "pokestats",
   "version": "1.0.0",
   "description": "A Pokemon API specific service",
   "main": "index.js",
-  "repository": "https://github.com/rootasjey/pokeverse.git",
+  "repository": "https://github.com/rootasjey/pokestats.git",
   "author": "rootasjey <jeremiecorpinot@outlook.com>",
   "license": "MIT",
   "private": false,
