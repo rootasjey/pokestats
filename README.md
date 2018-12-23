@@ -16,7 +16,7 @@ It will show a GrapQL playground where you can write a GraphQL request:
 
 ```gql
 {
-  averageStats(type1: "ground") {
+  averageStats(type1: GROUND) {
     meta { lastUpdated }
     avg {
       attack
@@ -67,7 +67,7 @@ Somewhere in your app, where you want to fetch data:
 import { request } from 'graphql-request';
 
 const query = `{
-  averageStats(type1: "ground") {
+  averageStats(type1: GROUND) {
     meta { lastUpdated }
     avg {
       attack
@@ -95,17 +95,11 @@ headers.append('Content-Type', 'application/json');
 fetch('URL_on_GitHub_page', {
   method: 'POST',
   headers,
-  data: JSON.stringify({ "query": "averageStats(type1: \"ground\") { avg { attack } }" })
+  data: JSON.stringify({ "query": "averageStats(type1: GROUND) { avg { attack } }" })
 });
 
-// If you want to go to next line, you've to insert a '\n' like this:
-
-JSON.stringify({ "query": "averageStats(type1: \"ground\") {\n
-  {\n
-    attack\n
-  }\n
-"});
-
+// If you want to go to next line,
+// you've to insert '\n' on th previous line before jumping to the next.
 // Which isn't really beautiful :|
 
 ```
@@ -121,6 +115,14 @@ This usually takes some seconds for the server to respond.
 The data are automatically updated every few days.
 
 If you don't want to use caching, you can specify `caching: false` for some queries.
+
+```gql
+
+{
+  averageStats(type1: GROUND, caching: false) { ... }
+}
+
+```
 
 Know that requesting fresh data uses more data, is slower and uses more computational work.
 
@@ -149,7 +151,7 @@ Request (with 1 type):
 ```gql
 
 {
-  averageStats(type1: "ground") {
+  averageStats(type1: GROUND) {
     avg {
       specialAttack
       specialDefense
@@ -183,12 +185,13 @@ Request (with 2 types):
 ```gql
 
 {
-  averageStats(type1: "bug", type2: "poison") {
+  averageStats(type1: BUG, type2: POISON) {
     avg {
       attack
       defense
       hp
     }
+    types
   }
 }
 
@@ -204,7 +207,8 @@ Response:
         "attack": 92,
         "defense": 87,
         "hp": 76
-      }
+      },
+      "types": ["bug", "poison"]
     }
   }
 }

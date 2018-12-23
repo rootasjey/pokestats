@@ -7,7 +7,7 @@ module.exports = gql`
     version: String,
 
     "Get a Pokemon's type average stats"
-    averageStats(type1: Type!, type2: Type): StatsResponse,
+    averageStats(type1: Type!, type2: Type, cached: Boolean = true): StatsResponse,
   }
 
   "Meta data (e.g. last updated)"
@@ -39,11 +39,17 @@ module.exports = gql`
 
   "API response for statistics"
   type StatsResponse {
+    "Pokemon's average statistics"
+    avg: Stats,
+
     "Response meta data"
     meta: Meta,
 
-    "Pokemon's average statistics"
-    avg: Stats,
+    "Number of Pokemons the stats were calculated from"
+    pokemonCount: Int!,
+
+    "Stats for the type(s) required"
+    types: [String!]!,
   }
 
   """Pokemon's type"""

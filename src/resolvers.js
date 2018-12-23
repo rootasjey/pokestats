@@ -6,16 +6,21 @@ module.exports = {
     version: () => '1.0.0',
 
     averageStats: async (root, args) => {
-      const { type1, type2 } = args;
-      let types = type2 ? [type1, type2] : [type1];
+      const { cached, type1, type2 } = args;
+      let typesNames = type2 ? [type1, type2] : [type1];
 
-      types = types.map((type) => {
+      if (type1 === type2) {
+        typesNames = [type1];
+      }
+
+      typesNames = typesNames.map((type) => {
         return type.toLowerCase();
       });
 
+
       try {
-        const response = await Pokedex.getTypeByName(types);
-        return await calculateAvgStats(response);
+        const types = await Pokedex.getTypeByName(typesNames);
+        return await calculateAvgStats({ cached, types });
 
       } catch (error) {
         return {
