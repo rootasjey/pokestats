@@ -1,8 +1,8 @@
 const fs      = require('fs-extra');
 const Pokedex = require('./pokedex-api');
 
-const PREFRIX = './data/';
-const CACHE_MAX_DAYS = 2;
+const PREFRIX = './data/avg/';
+const CACHE_MAX_DAYS = 7;
 
 module.exports = {
   calculateAvgStats: async ({ cached = true, types = [] }) => {

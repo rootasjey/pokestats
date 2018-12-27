@@ -1,5 +1,12 @@
+const { ApolloError }       = require('apollo-server');
 const { calculateAvgStats } = require('./statsResolver');
 const Pokedex               = require('./pokedex-api');
+
+const {
+  dislike,
+  getControversy,
+  like,
+} = require('./controversyResolvers');
 
 module.exports = {
   Query: {
@@ -37,5 +44,37 @@ module.exports = {
         };
       }
     },
+
+    controversy: async (root, args) => {
+      const { pokemonId } = args;
+
+      if (pokemonId < 1 || pokemonId > 949) {
+        return new ApolloError("Pokemon's id must be between 1 and 949", '404');
+      }
+
+      return await getControversy({ pokemonId });
+    }
   },
+
+  Mutation: {
+    dislike: async (root, args) => {
+      const { pokemonId } = args;
+
+      if (pokemonId < 1 || pokemonId > 949) {
+        return new ApolloError("Pokemon's id must be between 1 and 949", '404');
+      }
+
+      return await dislike({ pokemonId });
+    },
+
+    like: async (root, args) => {
+      const { pokemonId } = args;
+
+      if (pokemonId < 1 || pokemonId > 949) {
+        return new ApolloError("Pokemon's id must be between 1 and 949", '404');
+      }
+
+      return await like({ pokemonId });
+    }
+  }
 };
