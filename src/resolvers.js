@@ -8,9 +8,16 @@ const {
   like,
 } = require('./controversyResolvers');
 
+const {
+  getSpritesById,
+  getSpritesByIds,
+  getSpritesByName,
+  getSpritesByNames,
+} = require('./spritesResolvers');
+
 module.exports = {
   Query: {
-    version: () => '1.0.0',
+    version: () => '1.1.0',
 
     averageStats: async (root, args) => {
       const { cached, type1, type2 } = args;
@@ -53,6 +60,26 @@ module.exports = {
       }
 
       return await getControversy({ pokemonId });
+    },
+
+    spritesById: async(root, args) => {
+      const { id } = args;
+      return await getSpritesById(id);
+    },
+
+    spritesByIds: async (root, args) => {
+      const { ids } = args;
+      return await getSpritesByIds(ids);
+    },
+
+    spritesByName: async(root, args) => {
+      const { name } = args;
+      return await getSpritesByName(name);
+    },
+
+    spritesByNames: async(root, args) => {
+      const { names } = args;
+      return await getSpritesByNames(names);
     }
   },
 

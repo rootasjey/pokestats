@@ -1,81 +1,114 @@
 const { gql } = require('apollo-server');
 
 module.exports = gql`
-  "Query data"
   type Query {
-    "API version"
+    """API version"""
     version: String,
 
-    "Get a Pokemon's type average stats"
+    """Get a Pokemon's type average stats"""
     averageStats(type1: Type!, type2: Type, cached: Boolean = true): StatsResponse,
 
-    "Get a Pokemon's likes and dislikes"
+    """Get a Pokemon's likes and dislikes"""
     controversy(pokemonId: Int!): ControversyResponse,
+
+    """Get one Pokemons' sprites by its Pokemon's ID.
+     If the id is not found, the sprites property will be null."""
+    spritesById(id: Int!): [SpritesEntry]!,
+
+    """Get multiple Pokemons' sprites by their Pokemons' ID.
+     If the id is not found, the sprites property will be null."""
+    spritesByIds(ids: [Int!]!): [SpritesEntry]!,
+
+    """Get one Pokemon's sprites by its Pokemons' names.
+     If the name is not found, the sprites property will be null."""
+    spritesByName(name: String!): [SpritesEntry]!,
+
+    """Get multiple Pokemons' sprites by their Pokemons' names.
+     If the name is not found, the sprites property will be null."""
+    spritesByNames(names: [String!]!): [SpritesEntry]!,
   }
 
-  "Update data"
   type Mutation {
-    "Add +1 to dislikes count"
+    """Add +1 to dislikes count"""
     dislike(pokemonId: Int!): ControversyResponse,
 
-    "Add +1 to likes count"
+    """Add +1 to likes count"""
     like(pokemonId: Int!): ControversyResponse,
   }
 
-  "Meta data (e.g. last updated)"
+  """Meta data (e.g. last updated)"""
   type Meta {
-    "Last time the data was updated (and not cached)"
+    """Last time the data was updated (and not cached)"""
     lastUpdated: String,
   }
 
-  "Pokemon statistics"
+  """A Sprites object containing images' URLs"""
+  type Sprites {
+    femaleBack: String,
+    femaleFront: String,
+    femaleShinyBack: String,
+    femaleShinyFront: String,
+    maleBack: String,
+    maleFront: String,
+    maleShinyBack: String,
+    maleShinyFront: String,
+  }
+
+  """A Pokemon's sprites"""
+  type SpritesEntry {
+    id: String,
+    name: String,
+    sprites: Sprites,
+  }
+
+  """Pokemon statistics"""
   type Stats {
-    "Pokemon physical attack value"
+    """Pokemon physical attack value"""
     attack: Int,
 
-    "Pokemon defense value"
+    """Pokemon defense value"""
     defense: Int,
 
-    "Pokemon health point value"
+    """Pokemon health point value"""
     hp: Int,
 
-    "Pokemon special attack value"
+    """Pokemon special attack value"""
     specialAttack: Int,
 
-    "Pokemon special defense value"
+    """Pokemon special defense value"""
     specialDefense: Int,
 
-    "Pokemon speed value"
+    """Pokemon speed value"""
     speed: Int,
   }
 
-  "API response for statistics"
+  """API response for statistics"""
   type StatsResponse {
-    "Pokemon's average statistics"
+    """Pokemon's average statistics"""
     avg: Stats,
 
-    "Response meta data"
+    """Response meta data"""
     meta: Meta,
 
-    "Number of Pokemons the stats were calculated from"
+    """Number of Pokemons the stats were calculated from"""
     pokemonCount: Int!,
 
-    "Stats for the type(s) required"
+    """Stats for the type(s) required"""
     types: [String!]!,
   }
 
-  "API response for controversy"
+  """API response for controversy"""
   type ControversyResponse {
-    "Pokemon's id"
+    """Pokemon's id"""
     id: Int!,
 
-    "Pokemon's name"
+    """Pokemon's name"""
     name: String,
 
-    "Pokemon's amount of likes"
+    """Pokemon's amount of likes"""
     likes: Int!,
 
-    "Pokemon's amount of dislikes"
+    """Pokemon's amount of dislikes"""
     dislikes: Int!,
   }
 
