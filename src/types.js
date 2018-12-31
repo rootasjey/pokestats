@@ -1,6 +1,9 @@
 const { gql } = require('apollo-server');
 
 module.exports = gql`
+  # ..................
+  # GraphQL Operations
+  # ..................
   type Query {
     """API version"""
     version: String,
@@ -10,6 +13,18 @@ module.exports = gql`
 
     """Get a Pokemon's likes and dislikes"""
     controversy(pokemonId: Int!): ControversyResponse,
+
+    """Get a Pokemon's data from its id."""
+    pokemonById(id: Int!): [Pokemon]!,
+
+    """Get multiple Pokemons' data from their id."""
+    pokemonsByIds(ids: [Int!]!): [Pokemon]!,
+
+    """Get a Pokemon's data from its name."""
+    pokemonByName(name: String!): [Pokemon]!,
+
+    """Get multiple Pokemons' data from their name."""
+    pokemonsByNames(names: [String!]!): [Pokemon]!,
 
     """Get one Pokemons' sprites by its Pokemon's ID.
      If the id is not found, the sprites property will be null."""
@@ -36,10 +51,137 @@ module.exports = gql`
     like(pokemonId: Int!): ControversyResponse,
   }
 
+  # ..................
+  # Custom types
+  # ..................
+
+  """API response for controversy"""
+  type ControversyResponse {
+    """Pokemon's id"""
+    id: Int!,
+
+    """Pokemon's name"""
+    name: String,
+
+    """Pokemon's amount of likes"""
+    likes: Int!,
+
+    """Pokemon's amount of dislikes"""
+    dislikes: Int!,
+  }
+
   """Meta data (e.g. last updated)"""
   type Meta {
     """Last time the data was updated (and not cached)"""
     lastUpdated: String,
+  }
+
+  type Pokemon {
+    abilities: [PokemonAbilities],
+    baseExperience: Int,
+    forms: [PokemonForm],
+    height: Int,
+    gameIndices: [PokemonGameIndice],
+    heldItems: [PokemonHeldItem],
+    id: Int,
+    isDefault: Boolean,
+    locationAreaEncounters: String,
+    moves: [PokemonMoveEntry],
+    name: String,
+    order: Int,
+    species: [PokemonSpecies],
+    sprites: Sprites,
+    stats: [PokemonStats],
+    types: [PokemonTypeEntry],
+    weight: Int,
+  }
+
+  type PokemonAbilities {
+    ability: PokemonAbilitiesEntry,
+    isHidden: Boolean,
+    slot: Int,
+  }
+
+  type PokemonAbilitiesEntry {
+    name: String,
+    url: String,
+  }
+
+  type PokemonForm {
+    name: String,
+    url: String,
+  }
+
+  type PokemonGameIndice {
+    gameIndex: Int,
+    version: PokemonVersion,
+  }
+
+  type PokemonHeldItem {
+    item: PokemonItem,
+    versionDetails: PokemonVersionDetails,
+  }
+
+  type PokemonItem {
+    name: String,
+    url: String,
+  }
+
+  type PokemonMoveEntry {
+    move: PokemonMove,
+    versionGroupDetails: [PokemonVersionGroupDetails],
+  }
+
+  type PokemonMove {
+    name: String,
+    url: String,
+  }
+
+  type PokemonSpecies {
+    name: String,
+    url: String,
+  }
+
+  type PokemonStats {
+    baseStat: Int,
+    effort: Int,
+    stat: PokemonStat,
+  }
+
+  type PokemonStat {
+    name: String,
+    url: String,
+  }
+
+  type PokemonTypeEntry {
+    slot: Int,
+    type: PokemonType,
+  }
+
+  type PokemonType {
+    name: String,
+    url: String,
+  }
+
+  type PokemonVersion {
+    name: String,
+    url: String,
+  }
+
+  type PokemonVersionDetails {
+    rarity: Int,
+    version: PokemonVersion,
+  }
+
+  type PokemonVersionGroupDetails {
+    levelLearnedAt: Int,
+    moveLearnMethod: MoveLearnMethod,
+    versionGroup: PokemonVersion,
+  }
+
+  type MoveLearnMethod {
+    name: String,
+    url: String,
   }
 
   """A Sprites object containing images' URLs"""
@@ -48,10 +190,10 @@ module.exports = gql`
     femaleFront: String,
     femaleShinyBack: String,
     femaleShinyFront: String,
-    maleBack: String,
-    maleFront: String,
-    maleShinyBack: String,
-    maleShinyFront: String,
+    defaultBack: String,
+    defaultFront: String,
+    defaultShinyBack: String,
+    defaultShinyFront: String,
   }
 
   """A Pokemon's sprites"""
@@ -95,21 +237,6 @@ module.exports = gql`
 
     """Stats for the type(s) required"""
     types: [String!]!,
-  }
-
-  """API response for controversy"""
-  type ControversyResponse {
-    """Pokemon's id"""
-    id: Int!,
-
-    """Pokemon's name"""
-    name: String,
-
-    """Pokemon's amount of likes"""
-    likes: Int!,
-
-    """Pokemon's amount of dislikes"""
-    dislikes: Int!,
   }
 
   """Pokemon's type"""

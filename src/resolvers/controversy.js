@@ -1,5 +1,5 @@
-const fs = require('fs-extra');
-const Pokedex = require('./pokedex-api');
+const fs      = require('fs-extra');
+const Pokedex = require('../pokedex-api');
 
 const PREFRIX = './data/controversy/';
 

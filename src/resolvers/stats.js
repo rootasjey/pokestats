@@ -1,5 +1,5 @@
 const fs      = require('fs-extra');
-const Pokedex = require('./pokedex-api');
+const Pokedex = require('../pokedex-api');
 
 const PREFRIX = './data/avg/';
 const CACHE_MAX_DAYS = 7;

@@ -1,23 +1,30 @@
 const { ApolloError }       = require('apollo-server');
-const { calculateAvgStats } = require('./statsResolver');
-const Pokedex               = require('./pokedex-api');
+const { calculateAvgStats } = require('./stats');
+const Pokedex               = require('../pokedex-api');
 
 const {
   dislike,
   getControversy,
   like,
-} = require('./controversyResolvers');
+} = require('./controversy');
+
+const {
+  getPokemonById,
+  getPokemonsByIds,
+  getPokemonByName,
+  getPokemonsByNames,
+} = require('./pokemon');
 
 const {
   getSpritesById,
   getSpritesByIds,
   getSpritesByName,
   getSpritesByNames,
-} = require('./spritesResolvers');
+} = require('./sprites');
 
 module.exports = {
   Query: {
-    version: () => '1.1.0',
+    version: () => '1.2.0',
 
     averageStats: async (root, args) => {
       const { cached, type1, type2 } = args;
@@ -60,6 +67,26 @@ module.exports = {
       }
 
       return await getControversy({ pokemonId });
+    },
+
+    pokemonById: async (root, args) => {
+      const { id } = args;
+      return await getPokemonById(id);
+    },
+
+    pokemonsByIds: async (root, args) => {
+      const { ids } = args;
+      return await getPokemonsByIds(ids);
+    },
+
+    pokemonByName: async (root, args) => {
+      const { name } = args;
+      return await getPokemonByName(name);
+    },
+
+    pokemonsByNames: async (root, args) => {
+      const { names } = args;
+      return await getPokemonsByNames(names);
     },
 
     spritesById: async(root, args) => {

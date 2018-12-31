@@ -1,5 +1,10 @@
-const fs            = require('fs-extra');
-const Pokedex       = require('./pokedex-api');
+const fs      = require('fs-extra');
+const Pokedex = require('../pokedex-api');
+
+const {
+  logFileError,
+  toPascalNameSprites,
+}  = require('./utils');
 
 const BY_ID_PATH    = './data/sprites/lowResById.json';
 const BY_NAME_PATH  = './data/sprites/lowResByName.json';
@@ -8,7 +13,7 @@ module.exports = {
   async getSpritesById(id = 1) {
     await checkFile(BY_ID_PATH);
 
-    const data = await fs.readJSON(BY_ID_PATH);
+    const data = await tryRead(BY_ID_PATH);
     const result = await findDataId(id, data);
 
     return [result];
@@ -17,7 +22,7 @@ module.exports = {
   async getSpritesByIds(ids = []) {
     await checkFile(BY_ID_PATH);
 
-    const data = await fs.readJSON(BY_ID_PATH);
+    const data = await tryRead(BY_ID_PATH);
 
     const promises = ids
       .map(async (id) => {
@@ -34,7 +39,7 @@ module.exports = {
   async getSpritesByName(name = '') {
     await checkFile(BY_NAME_PATH);
 
-    const data = await fs.readJSON(BY_NAME_PATH);
+    const data = await tryRead(BY_NAME_PATH);
     const result = await findDataName(name, data);
 
     return [result];
@@ -43,7 +48,8 @@ module.exports = {
   async getSpritesByNames(names = []) {
     await checkFile(BY_NAME_PATH);
 
-    const data = await fs.readJSON(BY_NAME_PATH);
+    const data = await tryRead(BY_NAME_PATH);
+
     const promises = names
       .map(async (name) => {
         return await findDataName(name, data);
@@ -61,7 +67,7 @@ async function checkFile(path = '') {
   const exists = await fs.pathExists(path);
 
   if (!exists) {
-    throw new Error('Data file for sprites by id is not available.');
+    await fs.outputJSON(path, {});
   }
 }
 
@@ -77,11 +83,11 @@ async function findDataId(id, data) {
     const dataEntry = {
       id,
       name,
-      sprites: normalizeSprites(sprites),
+      sprites: toPascalNameSprites(sprites),
     };
 
     fs.writeJSON(BY_ID_PATH, {
-      ...data, ...{[id]: dataEntry}
+      ...data, ...{ [id]: dataEntry }
     });
 
     // Optimisation: share data
@@ -110,7 +116,7 @@ async function findDataName(name, data) {
     const dataEntry = {
       id,
       name,
-      sprites: normalizeSprites(sprites),
+      sprites: toPascalNameSprites(sprites),
     };
 
     fs.writeJSON(BY_NAME_PATH, {
@@ -131,43 +137,50 @@ async function findDataName(name, data) {
   }
 }
 
-function normalizeSprites(sprites) {
-  return {
-    "femaleBack"        : sprites.back_female,
-    "femaleFront"       : sprites.front_female,
-    "femaleShinyBack"   : sprites.back_shiny_female,
-    "femaleShinyFront"  : sprites.front_shiny_female,
-    "maleBack"          : sprites.back_default,
-    "maleFront"         : sprites.front_default,
-    "maleShinyBack"     : sprites.back_shiny,
-    "maleShinyFront"    : sprites.front_shiny,
-  };
-}
-
 async function saveForByIdAsWell(dataEntry) {
+  const path = BY_ID_PATH;
   const { id } = dataEntry;
 
-  const previousData = await fs.readJSON(BY_ID_PATH);
+  await checkFile(path);
+  const previousData = await tryRead(path);
 
   if (previousData[id]) {
     return;
   }
 
-  fs.writeJSON(BY_ID_PATH, {
+  fs.writeJSON(path, {
     ...previousData, ...{ [id]: dataEntry }
   });
 }
 
 async function saveForByNameAsWell(dataEntry) {
+  const path = BY_NAME_PATH;
   const { name } = dataEntry;
 
-  const previousData = await fs.readJSON(BY_NAME_PATH);
+  await checkFile(path);
+  const previousData = await tryRead(path);
 
   if (previousData[name]) {
     return;
   }
 
-  fs.writeJSON(BY_NAME_PATH, {
+  fs.writeJSON(path, {
     ...previousData, ...{[name]: dataEntry}
   });
+}
+
+/**
+ * Read with failure.
+ * @param {String} path JSON file path.
+ */
+async function tryRead(path) {
+  try {
+    return await fs.readJSON(path);
+
+  } catch (error) {
+    logFileError({ error });
+
+    await fs.outputJSON(path, {});
+    return {};
+  }
 }
