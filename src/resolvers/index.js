@@ -22,9 +22,13 @@ const {
   getSpritesByNames,
 } = require('./sprites');
 
+const {
+  getList,
+} = require('./list');
+
 module.exports = {
   Query: {
-    version: () => '1.2.0',
+    version: () => '1.3.0',
 
     averageStats: async (root, args) => {
       const { cached, type1, type2 } = args;
@@ -69,6 +73,11 @@ module.exports = {
       return await getControversy({ pokemonId });
     },
 
+    list: async (root, args) => {
+      const { start, end } = args;
+      return await getList({ start, end });
+    },
+
     pokemonById: async (root, args) => {
       const { id } = args;
       return await getPokemonById(id);
@@ -111,6 +120,9 @@ module.exports = {
   },
 
   Mutation: {
+    /**
+     * Dislike a Pokemon (add +1 to dislikes).
+     */
     dislike: async (root, args) => {
       const { pokemonId } = args;
 
@@ -121,6 +133,9 @@ module.exports = {
       return await dislike({ pokemonId });
     },
 
+    /**
+     * like a Pokemon (add +1 to likes).
+     */
     like: async (root, args) => {
       const { pokemonId } = args;
 

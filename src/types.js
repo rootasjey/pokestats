@@ -14,6 +14,9 @@ module.exports = gql`
     """Get a Pokemon's likes and dislikes"""
     controversy(pokemonId: Int!): ControversyResponse,
 
+    """Return a pokemons' list (from a start to an end if specified)."""
+    list(start: Int, end: Int): ListResult,
+
     """Get a Pokemon's data from its id."""
     pokemonById(id: Int!): [Pokemon]!,
 
@@ -66,14 +69,49 @@ module.exports = gql`
     """Pokemon's amount of likes"""
     likes: Int!,
 
-    """Pokemon's amount of dislikes"""
+    """Pokemon's amount of dislikes."""
     dislikes: Int!,
   }
 
-  """Meta data (e.g. last updated)"""
+  type ListResult {
+    """Number of Pokemons returned in this result."""
+    count: Int,
+
+    """Stop the list data to this Pokemon's id."""
+    end: Int,
+
+    """List of Pokemons."""
+    results: [MinimalPokemon],
+
+    """Stat the list data from this Pokemon's id."""
+    start: Int,
+  }
+
+
+  """Meta data (e.g. last updated)."""
   type Meta {
-    """Last time the data was updated (and not cached)"""
+    """Last time the data was updated (and not cached)."""
     lastUpdated: String,
+  }
+
+  """Minimal pokemon's data."""
+  type MinimalPokemon {
+    """Pokemon's id."""
+    id: Int,
+
+    """Pokemon's name."""
+    name: String,
+
+    """Pokemon's sprites."""
+    sprites: Sprites,
+
+    """Pokemon's information URL."""
+    url: String,
+  }
+
+  type MoveLearnMethod {
+    name: String,
+    url: String,
   }
 
   type Pokemon {
@@ -179,20 +217,30 @@ module.exports = gql`
     versionGroup: PokemonVersion,
   }
 
-  type MoveLearnMethod {
-    name: String,
-    url: String,
-  }
-
   """A Sprites object containing images' URLs"""
   type Sprites {
+    """Image's URL of the back of this female Pokemon (if any)."""
     femaleBack: String,
+
+    """Image's URL of the front of this female Pokemon (if any)."""
     femaleFront: String,
+
+    """Image's URL of the back of this female shiny Pokemon (if any)."""
     femaleShinyBack: String,
+
+    """Image's URL of the front of this shiny female Pokemon (if any)."""
     femaleShinyFront: String,
+
+    """Image's URL of the back of this Pokemon."""
     defaultBack: String,
+
+    """Image's URL of the front of this Pokemon."""
     defaultFront: String,
+
+    """Image's URL of the back of this shiny Pokemon (if any)."""
     defaultShinyBack: String,
+
+    """Image's URL of the front of this shiny Pokemon (if any)."""
     defaultShinyFront: String,
   }
 

@@ -1,11 +1,10 @@
 const fs      = require('fs-extra');
+const PATHS   = require('./paths');
 const Pokedex = require('../pokedex-api');
-
-const PREFRIX = './data/controversy/';
 
 module.exports = resolver = {
   getControversy: async ({ pokemonId = 1 }) => {
-    const filePath = `${PREFRIX}${pokemonId}.json`;
+    const filePath = `${PATHS.CONTROVERSY_DIR}${pokemonId}.json`;
     const fileExists = await fs.pathExists(filePath);
 
     const defaultResponse = {
@@ -45,7 +44,7 @@ module.exports = resolver = {
 
     const newControversy = { ...controversy, ...{ likes }};
 
-    const filePath = `${PREFRIX}${pokemonId}.json`;
+    const filePath = `${PATHS.CONTROVERSY_DIR}${pokemonId}.json`;
     await fs.outputJSON(filePath, newControversy);
 
     return newControversy;
@@ -57,7 +56,7 @@ module.exports = resolver = {
 
     const newControversy = { ...controversy, ...{ dislikes } };
 
-    const filePath = `${PREFRIX}${pokemonId}.json`;
+    const filePath = `${PATHS.CONTROVERSY_DIR}${pokemonId}.json`;
     await fs.outputJSON(filePath, newControversy);
 
     return newControversy;

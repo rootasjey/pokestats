@@ -1,7 +1,7 @@
 const fs      = require('fs-extra');
+const PATHS   = require('./paths');
 const Pokedex = require('../pokedex-api');
 
-const PREFRIX = './data/avg/';
 const CACHE_MAX_DAYS = 7;
 
 module.exports = {
@@ -120,7 +120,7 @@ async function calculateSingle({ cached, types = [] }) {
   const typeName = type.name;
   const typesNames = [typeName];
 
-  const filePath = `${PREFRIX}${type.name}.json`;
+  const filePath = `${PATHS.AVG_DIR}${type.name}.json`;
 
   const fileExists = await fs.pathExists(filePath);
 
@@ -192,11 +192,13 @@ function findPokemonsWithDoubleType(type1, type2) {
  * @param {Object} param0 Types.
  */
 function getFilePath({ typeName1, typeName2 }) {
+  const pathDir = PATHS.AVG_DIR;
+
   if (typeName1 < typeName2) {
-    return `${PREFRIX}${typeName1}-${typeName2}.json`;
+    return `${pathDir}${typeName1}-${typeName2}.json`;
   }
 
-  return `${PREFRIX}${typeName2}-${typeName1}.json`;
+  return `${pathDir}${typeName2}-${typeName1}.json`;
 }
 
 /**
