@@ -1,8 +1,10 @@
 # pokestats
 
-A Pokemon specific API service.
+_A Pokemon specific API service._
 
-This API service's purpose is **not** to be exhaustive about all Pokemon information but rather some specific data which don't exist somewhere else (yet).
+This API service's purpose is **not** to be exhaustive about all Pokemon information but rather providing some specific data which don't exist somewhere else (yet).
+
+Under the hood, this service uses [pokedex-promise-v2](https://github.com/PokeAPI/pokedex-promise-v2#readme) library which is based on [PokeAPI](http://pokeapi.co).
 
 ## Quickstart
 
@@ -14,32 +16,44 @@ You can use the API in the browser by navigating on the available link.
 
 It will show a GrapQL playground where you can write a GraphQL request:
 
+Request:
+
 ```gql
-{
-  averageStats(type1: GROUND) {
-    meta { lastUpdated }
+
+query {
+  averageStats(type1: FIRE) {
     avg {
       attack
+      defense
+      hp
     }
+    types
   }
 }
+
 ```
 
-You'll receive data similar to:
+You'll receive the following data:
+
+Response:
 
 ```json
+
 {
   "data": {
     "averageStats": {
-      "meta": {
-        "lastUpdated": "2018-12-22T12:57:10.583Z"
-      },
       "avg": {
-        "attack": 92
-      }
+        "attack": 82,
+        "defense": 70,
+        "hp": 69
+      },
+      "types": [
+        "fire"
+      ]
     }
   }
 }
+
 ```
 
 ### In JavaScript
@@ -104,6 +118,23 @@ fetch('URL_on_GitHub_page', {
 
 ```
 
+## Purpose and Features
+
+While building a Pokedex with web technologies, I found myself missing some features from [PokeAPI](http://pokeapi.co) (though I'm very glad this open API exists).
+
+This is my attempt to provide additional features.
+
+*Pokestats* builds is own data for some queries (based on from [PokeAPI](http://pokeapi.co)).
+
+Features:
+
+* GraphQL implementation for data optimizations (get only what you need)
+* The `list` endpoint returns a Pokemon `id` and a `Sprites` fields
+* A `search` endpoint to query partial Pokemons' names
+* Sprites endpoints
+* Average Pokemons' statistics endpoint by types
+* Like/Dislike endpoint
+
 ## Caching
 
 As some queries are expensive, the server caches and saves data (in `JSON` format) for stable information (information which doesn't change frequently) and serves it in subsequent requests.
@@ -124,7 +155,7 @@ If you don't want to use caching, you can specify `caching: false` for some quer
 
 ```
 
-Know that requesting fresh data uses more data, is slower and uses more computational work.
+Keep in minde that requesting fresh data uses more data, is slower and uses more computational work.
 
 ## API Consumption
 
