@@ -171,6 +171,8 @@ You can consume the API in different ways:
 * [list](#list)
 * [pokemonById](#pokemonById)
 * [pokemonsByIds](#pokemonsByIds)
+* [pokemonByName](#pokemonByName)
+* [pokemonsByNames](#pokemonsByNames)
 * [search](#search)
 * [spritesById](#spritesById)
 * [spritesByIds](#spritesByIds)
@@ -543,10 +545,11 @@ query {
   pokemonsByIds(ids: [42000]) {
     id
     name
-    abilities { ... }
-    types { ... }
-    sprites { ... }
-    stats { ... }
+    types {
+      type {
+        name
+      }
+    }
   }
 }
 
@@ -562,11 +565,9 @@ Response:
       {
         "id": 42000,
         "name": null,
-        "abilities": null,
-        "types": null,
-        "sprites": null,
-        "stats": null
+        "types": null
       }
+    ]
   }
 }
 
@@ -574,7 +575,7 @@ Response:
 
 [Back to API](#API)
 
-#### pokemonByName
+### pokemonByName
 
 You can query a Pokemon by its name:
 
@@ -631,10 +632,11 @@ query {
   pokemonByName(name: "toto") {
     id
     name
-    abilities { ... }
-    types { ... }
-    sprites { ... }
-    stats { ... }
+    types {
+      type {
+        name
+      }
+    }
   }
 }
 
@@ -650,11 +652,9 @@ Response:
       {
         "id": null,
         "name": "toto",
-        "abilities": null,
-        "types": null,
-        "sprites": null,
-        "stats": null
+        "types": null
       }
+    ]
   }
 }
 
@@ -728,10 +728,11 @@ query {
   pokemonsByNames(names: ["toto"]) {
     id
     name
-    abilities { ... }
-    types { ... }
-    sprites { ... }
-    stats { ... }
+    types {
+      type {
+        name
+      }
+    }
   }
 }
 
@@ -747,11 +748,9 @@ Response:
       {
         "id": null,
         "name": "toto",
-        "abilities": null,
-        "types": null,
-        "sprites": null,
-        "stats": null
+        "types": null
       }
+    ]
   }
 }
 
