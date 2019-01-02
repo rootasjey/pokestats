@@ -24,11 +24,12 @@ const {
 
 const {
   getList,
+  search,
 } = require('./list');
 
 module.exports = {
   Query: {
-    version: () => '1.3.0',
+    version: () => '1.4.0',
 
     averageStats: async (root, args) => {
       const { cached, type1, type2 } = args;
@@ -96,6 +97,11 @@ module.exports = {
     pokemonsByNames: async (root, args) => {
       const { names } = args;
       return await getPokemonsByNames(names);
+    },
+
+    search: async (root, args) => {
+      const { name } = args;
+      return await search(name);
     },
 
     spritesById: async(root, args) => {

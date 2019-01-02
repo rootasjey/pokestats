@@ -20,8 +20,29 @@ module.exports = {
       results,
       start   : _start,
     };
-  }
-}
+  },
+
+  /**
+   * Return a list of Pokemons wich have their names matching with the string provided.
+   * @param {String} name String to find Pokemons with.
+   */
+  async search(name = '') {
+    const data = await getListData();
+    const dataWithSprites = await tryAddSprites(data.results);
+
+    const results = dataWithSprites
+      .filter((pokemon) => {
+        return pokemon.name.indexOf(name) > -1;
+      });
+
+    return {
+      count   : results.length,
+      end     : results.length,
+      results,
+      start   : 0,
+    };
+  },
+};
 
 async function getListData() {
   const path = PATHS.LIST;

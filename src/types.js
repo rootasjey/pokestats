@@ -29,6 +29,9 @@ module.exports = gql`
     """Get multiple Pokemons' data from their name."""
     pokemonsByNames(names: [String!]!): [Pokemon]!,
 
+    """Find Pokemons which have their names matching the string parameter."""
+    search(name: String!): ListResult,
+
     """Get one Pokemons' sprites by its Pokemon's ID.
      If the id is not found, the sprites property will be null."""
     spritesById(id: Int!): [SpritesEntry]!,
