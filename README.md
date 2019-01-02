@@ -124,7 +124,7 @@ While building a Pokedex with web technologies, I found myself missing some feat
 
 This is my attempt to provide additional features.
 
-*Pokestats* builds is own data for some queries (based on from [PokeAPI](http://pokeapi.co)).
+*Pokestats* builds is own data for some queries (based on [PokeAPI](http://pokeapi.co)).
 
 Features:
 
