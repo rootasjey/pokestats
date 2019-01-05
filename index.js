@@ -6,6 +6,7 @@ const resolvers = require('./src/resolvers');
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  introspection: true,
   playground: true,
 });
 
