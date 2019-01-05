@@ -29,7 +29,7 @@ const {
 
 module.exports = {
   Query: {
-    version: () => '1.4.0',
+    version: () => '1.5.0',
 
     averageStats: async (root, args) => {
       const { cached, type1, type2 } = args;

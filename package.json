@@ -1,6 +1,6 @@
 {
   "name": "pokestats",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "A Pokemon API specific service",
   "main": "index.js",
   "repository": "https://github.com/rootasjey/pokestats.git",
