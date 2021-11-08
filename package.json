@@ -12,7 +12,7 @@
     "start": "node ./index.js"
   },
   "dependencies": {
-    "apollo-server": "2.16.1",
+    "apollo-server": "2.25.3",
     "fs-extra": "9.0.1",
     "graphql": "15.3.0",
     "pokedex-promise-v2": "3.2.0"
